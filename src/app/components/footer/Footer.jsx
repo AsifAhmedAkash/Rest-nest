@@ -8,14 +8,14 @@ export default function Footer() {
 
                 {/* Brand */}
                 <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center ">
                         <span
                             className="material-symbols-outlined text-secondary text-3xl"
                             style={{ fontVariationSettings: "'FILL' 1" }}
                         >
-                            home_work
+                            Rent
                         </span>
-                        <span className="text-xl font-bold">RentNest</span>
+                        <span className="text-3xl font-bold text-on-primary">Nest</span>
                     </div>
                     <p className="text-white/50 text-sm pr-4">
                         Leading the future of rental real estate with transparency,

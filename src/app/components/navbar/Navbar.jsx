@@ -17,14 +17,14 @@ export default function Navbar() {
                 }`}
         >
             {/* Logo */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center ">
                 <span
                     className="material-symbols-outlined text-secondary text-3xl"
                     style={{ fontVariationSettings: "'FILL' 1" }}
                 >
-                    home_work
+                    Rent
                 </span>
-                <span className="text-2xl font-bold text-on-surface">RentNest</span>
+                <span className="text-3xl font-bold text-on-surface">Nest</span>
             </div>
 
             {/* Nav Links */}
