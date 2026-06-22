@@ -19,7 +19,7 @@ export default function SignInPage() {
             await signIn.email({
                 email,
                 password,
-                callbackURL: "/dashboard",
+                callbackURL: "/",
             });
         } catch (err) {
             setError("Invalid email or password. Please try again.");

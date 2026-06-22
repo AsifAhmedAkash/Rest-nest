@@ -11,6 +11,7 @@ export default function SignUpPage() {
     const [agreed, setAgreed] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [role, setRole] = useState("tenant");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +28,8 @@ export default function SignUpPage() {
                 name,
                 email,
                 password,
-                callbackURL: "/dashboard",
+                role,
+                callbackURL: "/",
             });
         } catch (err) {
             setError("Something went wrong. Please try again.");
@@ -35,6 +37,21 @@ export default function SignUpPage() {
             setLoading(false);
         }
     };
+
+    const roles = [
+        {
+            value: "tenant",
+            label: "Tenant",
+            icon: "person_search",
+            description: "I'm looking for a place to rent",
+        },
+        {
+            value: "owner",
+            label: "Owner",
+            icon: "home",
+            description: "I want to list my property",
+        },
+    ];
 
     return (
         <main className="min-h-screen flex flex-col md:flex-row">
@@ -84,6 +101,49 @@ export default function SignUpPage() {
                     )}
 
                     <form className="space-y-6" onSubmit={handleSubmit}>
+
+                        {/* Role Selector */}
+                        <div className="space-y-2">
+                            <label className="block text-sm font-semibold text-on-surface">
+                                I am a...
+                            </label>
+                            <div className="grid grid-cols-2 gap-3">
+                                {roles.map(({ value, label, icon, description }) => (
+                                    <button
+                                        key={value}
+                                        type="button"
+                                        onClick={() => setRole(value)}
+                                        className={`flex flex-col items-start gap-1.5 p-4 rounded-xl border-2 text-left transition-all duration-200 ${role === value
+                                                ? "border-secondary bg-secondary/5 shadow-sm"
+                                                : "border-outline-variant hover:border-secondary/40 hover:bg-surface-container/40"
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-2 w-full">
+                                            <span
+                                                className={`material-symbols-outlined text-xl ${role === value ? "text-secondary" : "text-outline"
+                                                    }`}
+                                                style={role === value ? { fontVariationSettings: "'FILL' 1" } : {}}
+                                            >
+                                                {icon}
+                                            </span>
+                                            <span className={`text-sm font-bold ${role === value ? "text-secondary" : "text-on-surface"}`}>
+                                                {label}
+                                            </span>
+                                            {/* Radio dot */}
+                                            <div className={`ml-auto w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${role === value ? "border-secondary" : "border-outline-variant"
+                                                }`}>
+                                                {role === value && (
+                                                    <div className="w-2 h-2 rounded-full bg-secondary" />
+                                                )}
+                                            </div>
+                                        </div>
+                                        <p className="text-xs text-on-surface-variant leading-snug">
+                                            {description}
+                                        </p>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
 
                         {/* Full Name */}
                         <div className="space-y-1">
@@ -156,13 +216,13 @@ export default function SignUpPage() {
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-base ${confirmPassword && password !== confirmPassword
-                                            ? "border-error"
-                                            : "border-outline-variant"
+                                                ? "border-error"
+                                                : "border-outline-variant"
                                             }`}
                                     />
                                 </div>
                                 {confirmPassword && password !== confirmPassword && (
-                                    <p className="text-xs text-error mt-1">Passwords dont match</p>
+                                    <p className="text-xs text-error mt-1">Passwords don't match</p>
                                 )}
                             </div>
                         </div>
@@ -200,7 +260,7 @@ export default function SignUpPage() {
                                     Creating Account...
                                 </>
                             ) : (
-                                "Create Account"
+                                `Create Account as ${role === "tenant" ? "Tenant" : "Owner"}`
                             )}
                         </button>
                     </form>
