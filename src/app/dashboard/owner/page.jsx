@@ -60,7 +60,7 @@ export default function OwnerDashboard() {
 
 
             {/* ── Main ── */}
-            <main className="md:ml-64 min-h-screen px-4 md:px-16 py-12 space-y-12 pb-20">
+            <main className="md:ml-4 min-h-screen px-4 md:px-16 py-12 space-y-12 pb-20">
 
                 {/* Header */}
                 <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -123,53 +123,7 @@ export default function OwnerDashboard() {
                 </div>
             </main>
 
-            {/* ── Footer ── */}
-            <footer className="md:ml-64 w-full px-4 md:px-16 py-12 bg-inverse-surface text-white">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className="space-y-4">
-                        <h4 className="text-xl font-bold">RentNest</h4>
-                        <p className="text-sm text-white/50 max-w-xs">Connecting owners and tenants in Khulna with reliability and modern simplicity.</p>
-                    </div>
-                    {[
-                        { title: "Quick Links", links: ["About Us", "Contact Support"] },
-                        { title: "Legal", links: ["Terms of Service", "Privacy Policy"] },
-                        { title: "Support", links: ["Contact Support", "FAQ"] },
-                    ].map((col) => (
-                        <div key={col.title} className="space-y-4">
-                            <h5 className="text-sm font-semibold text-white">{col.title}</h5>
-                            <ul className="space-y-2">
-                                {col.links.map((l) => (
-                                    <li key={l}><a href="#" className="text-sm text-white/50 hover:text-white transition-colors">{l}</a></li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-                <div className="mt-8 pt-6 border-t border-white/10 text-xs text-white/30">
-                    © 2024 RentNest Real Estate. All rights reserved.
-                </div>
-            </footer>
 
-            {/* ── Mobile Nav ── */}
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-outline-variant/30 flex justify-around items-center py-3 z-50">
-                {[{ label: "Home", icon: "dashboard" }, { label: "Bookings", icon: "calendar_today" }].map((item) => (
-                    <a key={item.label} href="#" className="flex flex-col items-center gap-1 text-on-surface-variant">
-                        <span className="material-symbols-outlined">{item.icon}</span>
-                        <span className="text-[10px]">{item.label}</span>
-                    </a>
-                ))}
-                <div className="relative -top-6">
-                    <button className="bg-secondary text-white p-3 rounded-full shadow-lg">
-                        <span className="material-symbols-outlined">add</span>
-                    </button>
-                </div>
-                {[{ label: "Assets", icon: "home_work" }, { label: "Profile", icon: "person" }].map((item) => (
-                    <a key={item.label} href="#" className="flex flex-col items-center gap-1 text-on-surface-variant">
-                        <span className="material-symbols-outlined">{item.icon}</span>
-                        <span className="text-[10px]">{item.label}</span>
-                    </a>
-                ))}
-            </nav>
 
         </div>
     );
