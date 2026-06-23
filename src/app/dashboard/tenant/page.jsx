@@ -3,19 +3,15 @@ import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
 
 const stats = [
-    { label: "Total Bookings", value: "12", icon: "book_online", bg: "bg-primary-fixed", color: "text-on-primary-fixed" },
-    { label: "Favourites", value: "8", icon: "favorite", bg: "bg-secondary-container", color: "text-on-secondary-container", filled: true, href: "/dashboard/tenant/favourites" },
-    { label: "Active Rentals", value: "2", icon: "vpn_key", bg: "bg-tertiary-fixed", color: "text-on-tertiary-fixed-variant" },
-    { label: "Profile Status", badge: "Complete", icon: "account_circle", bg: "bg-surface-container", color: "text-outline" },
+    { label: "Total Bookings", value: "12", icon: "book_online", bg: "bg-[var(--color-primary-fixed)]", color: "text-[var(--color-on-primary-fixed)]" },
+    { label: "Favourites", value: "8", icon: "favorite", bg: "bg-[var(--color-secondary-container)]", color: "text-[var(--color-on-secondary-container)]", filled: true, href: "/dashboard/tenant/favourites" },
+    { label: "Active Rentals", value: "2", icon: "vpn_key", bg: "bg-[var(--color-tertiary-fixed)]", color: "text-[var(--color-on-tertiary-fixed)]" },
+    { label: "Profile Status", badge: "Complete", icon: "account_circle", bg: "bg-[var(--color-surface-container)]", color: "text-[var(--color-outline)]" },
 ];
-
-
 
 export default function TenantDashboardPage() {
     const { data: session, isPending } = useSession();
-    if (isPending) {
-        return <div>loading...</div>
-    }
+    if (isPending) return <div>loading...</div>;
 
     const user = session?.user;
     console.log("session data", session);
@@ -44,24 +40,21 @@ export default function TenantDashboardPage() {
 
     return (
         <div className="space-y-10">
-
-            {/* Welcome */}
             <div>
-                <h2 className="text-2xl font-bold text-on-surface">Welcome Back 👋</h2>
-                <p className="text-sm text-on-surface-variant mt-1">Here's what's happening with your rentals today.</p>
+                <h2 className="text-2xl font-bold text-[var(--color-on-surface)]">Welcome Back 👋</h2>
+                <p className="text-sm text-[var(--color-on-surface-variant)] mt-1">Here's what's happening with your rentals today.</p>
             </div>
 
-            {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 {stats.map((s) => {
                     const card = (
-                        <div className={`bg-white p-5 rounded-xl shadow-sm border border-outline-variant/20 flex items-start justify-between ${s.href ? "hover:-translate-y-0.5 hover:shadow-md transition-all cursor-pointer" : ""}`}>
+                        <div className={`bg-[var(--color-surface-container-lowest)] p-5 rounded-xl shadow-sm border border-[var(--color-outline-variant)]/20 flex items-start justify-between ${s.href ? "hover:-translate-y-0.5 hover:shadow-md transition-all cursor-pointer" : ""}`}>
                             <div>
-                                <p className="text-xs font-medium text-on-surface-variant mb-1">{s.label}</p>
+                                <p className="text-xs font-medium text-[var(--color-on-surface-variant)] mb-1">{s.label}</p>
                                 {s.value ? (
-                                    <p className="text-2xl font-bold text-on-surface">{s.value}</p>
+                                    <p className="text-2xl font-bold text-[var(--color-on-surface)]">{s.value}</p>
                                 ) : (
-                                    <span className="inline-flex items-center gap-1 bg-secondary-container/30 text-secondary text-xs font-semibold px-3 py-1 rounded-full mt-1">
+                                    <span className="inline-flex items-center gap-1 bg-[var(--color-secondary-container)]/30 text-[var(--color-secondary)] text-xs font-semibold px-3 py-1 rounded-full mt-1">
                                         <span className="material-symbols-outlined" style={{ fontSize: 13, fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                                         {s.badge}
                                     </span>
@@ -77,8 +70,6 @@ export default function TenantDashboardPage() {
                     return s.href ? <Link key={s.label} href={s.href}>{card}</Link> : <div key={s.label}>{card}</div>;
                 })}
             </div>
-
-
         </div>
     );
 }
