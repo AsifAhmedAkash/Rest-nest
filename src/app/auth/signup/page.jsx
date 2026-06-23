@@ -2,13 +2,18 @@
 
 import { useState } from "react";
 import { signUp } from "@/lib/auth-client";
+import { terms, privacyNpolicy } from "@/lib/legal/termsnpolicy";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
+    const router = useRouter();
+    const [showTerms, setShowTerms] = useState(false);
+    const [modalContent, setModalContent] = useState("terms");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [agreed, setAgreed] = useState(false);
+    const [agreed, setAgreed] = useState(true);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [role, setRole] = useState("tenant");
@@ -24,13 +29,24 @@ export default function SignUpPage() {
 
         setLoading(true);
         try {
-            await signUp.email({
+            const { data, error } = await signUp.email({
                 name,
                 email,
                 password,
                 role,
                 callbackURL: "/",
             });
+
+            if (error) {
+                if (error.code === "USER_ALREADY_EXISTS") {
+                    setError("An account with this email already exists.");
+                } else {
+                    setError(error.message ?? "Signup failed. Please try again.");
+                }
+                return; // ← stop here, don't redirect
+            }
+
+            router.push("/");
         } catch (err) {
             setError("Something went wrong. Please try again.");
         } finally {
@@ -80,64 +96,66 @@ export default function SignUpPage() {
             </div>
 
             {/* ── Right: Form ── */}
-            <div className="flex-1 flex items-center justify-center bg-white p-4 md:p-16 min-h-screen overflow-y-auto">
+            <div className="flex-1 flex items-center justify-center bg-white dark:bg-zinc-900 p-4 md:p-16 min-h-screen overflow-y-auto transition-colors">
                 <div className="w-full max-w-[480px]">
 
                     {/* Mobile logo */}
-                    <div className="md:hidden mb-12">
-                        <span className="text-xl font-bold text-on-surface">RentNest</span>
+                    <div className="md:hidden mb-10">
+                        <span className="text-xl font-bold text-black dark:text-white">
+                            RentNest
+                        </span>
                     </div>
 
                     <div className="mb-10">
-                        <h2 className="text-3xl font-bold text-on-surface mb-1">Create Account</h2>
-                        <p className="text-base text-on-surface-variant">Fill in your details to start your journey with us.</p>
+                        <h2 className="text-3xl font-bold text-black dark:text-white mb-1">
+                            Create Account
+                        </h2>
+                        <p className="text-base text-gray-600 dark:text-zinc-400">
+                            Fill in your details to start your journey with us.
+                        </p>
                     </div>
 
                     {/* Error */}
                     {error && (
-                        <div className="mb-6 px-4 py-3 bg-error-container/30 text-on-error-container text-sm rounded-lg border border-error/20">
+                        <div className="mb-6 px-4 py-3 bg-red-500/10 text-red-500 text-sm rounded-lg border border-red-500/20">
                             {error}
                         </div>
                     )}
 
                     <form className="space-y-6" onSubmit={handleSubmit}>
 
-                        {/* Role Selector */}
+                        {/* ROLE SELECTOR */}
                         <div className="space-y-2">
-                            <label className="block text-sm font-semibold text-on-surface">
+                            <label className="block text-sm font-semibold text-black dark:text-white">
                                 I am a...
                             </label>
+
                             <div className="grid grid-cols-2 gap-3">
                                 {roles.map(({ value, label, description }) => (
                                     <button
                                         key={value}
                                         type="button"
                                         onClick={() => setRole(value)}
-                                        className={`flex flex-col items-start gap-1.5 p-4 rounded-xl border-2 text-left transition-all duration-200 ${role === value
-                                            ? "border-secondary bg-secondary/5 shadow-sm"
-                                            : "border-outline-variant hover:border-secondary/40 hover:bg-surface-container/40"
+                                        className={`p-4 rounded-xl border-2 text-left transition-all ${role === value
+                                            ? "border-secondary bg-secondary/5"
+                                            : "border-gray-300 dark:border-zinc-700 hover:border-secondary/40 hover:bg-zinc-800/40"
                                             }`}
                                     >
-                                        <div className="flex items-center gap-2 w-full">
-                                            <span
-                                                className={`material-symbols-outlined text-xl ${role === value ? "text-secondary" : "text-outline"
-                                                    }`}
-                                                style={role === value ? { fontVariationSettings: "'FILL' 1" } : {}}
-                                            >
-
-                                            </span>
-                                            <span className={`text-sm font-bold ${role === value ? "text-secondary" : "text-on-surface"}`}>
+                                        <div className="flex items-center justify-between">
+                                            <span className={`font-semibold ${role === value ? "text-secondary" : "text-black dark:text-white"
+                                                }`}>
                                                 {label}
                                             </span>
-                                            {/* Radio dot */}
-                                            <div className={`ml-auto w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${role === value ? "border-secondary" : "border-outline-variant"
+
+                                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${role === value ? "border-secondary" : "border-gray-400 dark:border-zinc-600"
                                                 }`}>
                                                 {role === value && (
                                                     <div className="w-2 h-2 rounded-full bg-secondary" />
                                                 )}
                                             </div>
                                         </div>
-                                        <p className="text-xs text-on-surface-variant leading-snug">
+
+                                        <p className="text-xs text-gray-500 dark:text-zinc-400 mt-2">
                                             {description}
                                         </p>
                                     </button>
@@ -145,138 +163,145 @@ export default function SignUpPage() {
                             </div>
                         </div>
 
-                        {/* Full Name */}
-                        <div className="space-y-1">
-                            <label className="block text-sm font-semibold text-on-surface" htmlFor="fullName">
+                        {/* FULL NAME */}
+                        <div>
+                            <label className="text-sm font-semibold text-black dark:text-white">
                                 Full Name
                             </label>
-                            <div className="relative">
-                                {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">person</span> */}
-                                <input
-                                    id="fullName"
-                                    type="text"
-                                    placeholder="John Doe"
-                                    required
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-base"
-                                />
-                            </div>
+
+                            <input
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full px-4 py-3 rounded-lg border
+          bg-white dark:bg-zinc-800
+          text-black dark:text-white
+          border-gray-300 dark:border-zinc-700"
+                                placeholder="John Doe"
+                            />
                         </div>
 
-                        {/* Email */}
-                        <div className="space-y-1">
-                            <label className="block text-sm font-semibold text-on-surface" htmlFor="email">
+                        {/* EMAIL */}
+                        <div>
+                            <label className="text-sm font-semibold text-black dark:text-white">
                                 Email Address
                             </label>
-                            <div className="relative">
-                                {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">mail</span> */}
-                                <input
-                                    id="email"
-                                    type="email"
-                                    placeholder="name@example.com"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-base"
-                                />
-                            </div>
+
+                            <input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-3 rounded-lg border
+          bg-white dark:bg-zinc-800
+          text-black dark:text-white
+          border-gray-300 dark:border-zinc-700"
+                                placeholder="name@example.com"
+                            />
                         </div>
 
-                        {/* Password + Confirm */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-1">
-                                <label className="block text-sm font-semibold text-on-surface" htmlFor="password">
-                                    Password
-                                </label>
-                                <div className="relative">
-                                    {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">lock</span> */}
-                                    <input
-                                        id="password"
-                                        type="password"
-                                        placeholder="••••••••"
-                                        required
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full pl-10 pr-4 py-3 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-base"
-                                    />
-                                </div>
-                            </div>
-                            <div className="space-y-1">
-                                <label className="block text-sm font-semibold text-on-surface" htmlFor="confirmPassword">
-                                    Confirm Password
-                                </label>
-                                <div className="relative">
-                                    {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">verified_user</span> */}
-                                    <input
-                                        id="confirmPassword"
-                                        type="password"
-                                        placeholder="••••••••"
-                                        required
-                                        value={confirmPassword}
-                                        onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-base ${confirmPassword && password !== confirmPassword
-                                            ? "border-error"
-                                            : "border-outline-variant"
-                                            }`}
-                                    />
-                                </div>
-                                {confirmPassword && password !== confirmPassword && (
-                                    <p className="text-xs text-error mt-1">Passwords dont match</p>
-                                )}
-                            </div>
+                        {/* PASSWORD */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-3 rounded-lg border
+          bg-white dark:bg-zinc-800
+          text-black dark:text-white
+          border-gray-300 dark:border-zinc-700"
+                                placeholder="Password"
+                            />
+
+                            <input
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className={`w-full px-4 py-3 rounded-lg border
+          bg-white dark:bg-zinc-800
+          text-black dark:text-white
+          ${confirmPassword && password !== confirmPassword
+                                        ? "border-red-500"
+                                        : "border-gray-300 dark:border-zinc-700"
+                                    }`}
+                                placeholder="Confirm Password"
+                            />
                         </div>
 
-                        {/* Terms */}
+                        {confirmPassword && password !== confirmPassword && (
+                            <p className="text-xs text-red-500">
+                                Passwords don’t match
+                            </p>
+                        )}
+
+                        {/* TERMS */}
                         <div className="flex items-start gap-3">
                             <input
                                 id="terms"
                                 type="checkbox"
                                 checked={agreed}
                                 onChange={() => setAgreed(!agreed)}
-                                required
-                                className="mt-1 w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary cursor-pointer"
+                                aria-required="true"
+                                aria-invalid={!agreed}
+                                aria-describedby="terms-error"
+                                className="mt-1"
                             />
-                            <label htmlFor="terms" className="text-sm text-on-surface-variant cursor-pointer">
-                                I agree to the{" "}
-                                <a href="#" className="text-secondary font-semibold hover:underline">Terms &amp; Conditions</a>{" "}
-                                and{" "}
-                                <a href="#" className="text-secondary font-semibold hover:underline">Privacy Policy</a>.
-                            </label>
-                        </div>
 
-                        {/* Submit */}
+
+                            <p className="text-sm text-gray-600 dark:text-zinc-400">
+                                I agree to the{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setModalContent("terms");
+                                        setShowTerms(true);
+                                    }}
+                                    className="text-secondary font-semibold hover:underline"
+                                >
+                                    Terms
+                                </button>
+                                {" "} & {" "}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setModalContent("privacy");
+                                        setShowTerms(true);
+                                    }}
+                                    className="text-secondary font-semibold hover:underline"
+                                >
+                                    Privacy Policy
+                                </button>
+                            </p>
+                        </div>
+                        {!agreed && (
+                            <p id="terms-error" className="text-xs text-red-500 mt-1">
+                                You must accept Terms & Privacy Policy
+                            </p>
+                        )}
+
+                        {/* BUTTON */}
                         <button
                             type="submit"
-                            disabled={loading}
-                            className="w-full bg-secondary text-white py-4 rounded-lg text-sm font-semibold shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            disabled={loading || password !== confirmPassword}
+                            className="w-full bg-secondary text-white py-3 rounded-lg font-semibold disabled:opacity-50"
                         >
-                            {loading ? (
-                                <>
-                                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                    </svg>
-                                    Creating Account...
-                                </>
-                            ) : (
-                                `Create Account as ${role === "tenant" ? "Tenant" : "Owner"}`
-                            )}
+                            {loading
+                                ? "Creating Account..."
+                                : `Create Account as ${role}`}
                         </button>
                     </form>
 
-                    {/* Divider */}
-                    <div className="relative my-8 flex items-center">
-                        <div className="flex-grow border-t border-outline-variant/30" />
-                        <span className="flex-shrink mx-4 text-xs text-outline font-medium tracking-widest uppercase">
+                    {/* DIVIDER */}
+                    <div className="my-8 flex items-center gap-4">
+                        <div className="flex-1 h-px bg-gray-300 dark:bg-zinc-700" />
+                        <span className="text-xs text-gray-500 dark:text-zinc-400">
                             or continue with
                         </span>
-                        <div className="flex-grow border-t border-outline-variant/30" />
+                        <div className="flex-1 h-px bg-gray-300 dark:bg-zinc-700" />
                     </div>
 
-                    {/* Social */}
-                    <div className="grid grid-cols-2 gap-6 mb-8">
-                        <button className="flex items-center justify-center gap-3 py-3 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors text-sm font-semibold text-on-surface">
+                    {/* SOCIAL */}
+                    <div className="grid grid-cols-1">
+                        <button className="flex items-center justify-center gap-3 px-4 py-3 border text-black dark:text-white
+              border-gray-300 dark:border-zinc-700 border-outline-variant rounded-lg hover:bg-surface-container-low transition-all text-sm font-semibold text-on-surface active:scale-[0.98]">
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
                                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
                                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -285,22 +310,51 @@ export default function SignUpPage() {
                             </svg>
                             Google
                         </button>
-                        <button className="flex items-center justify-center gap-3 py-3 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors text-sm font-semibold text-on-surface">
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.05 20.28c-.96.95-2.18 2.02-3.66 2.02-1.4 0-1.85-.86-3.62-.86-1.78 0-2.3.85-3.62.85-1.44 0-2.8-1.18-3.8-2.64-2.07-3-2.6-7.53-.53-10.4 1-1.44 2.5-2.35 4.15-2.35 1.25 0 2.4.86 3.17.86.76 0 2.15-.98 3.65-.83 1.5.15 2.6.72 3.4 1.83-3.1 1.86-2.6 5.86.5 7.15-.65 1.6-1.5 3.2-2.66 4.37zM12.03 7.25c-.02-2.13 1.76-4.1 3.8-4.25.26 2.43-2.14 4.5-3.8 4.25z" />
-                            </svg>
-                            Apple
-                        </button>
+
                     </div>
 
-                    <p className="text-center text-base text-on-surface-variant">
+
+                    {/* SIGN IN */}
+                    <p className="text-center mt-8 text-sm text-gray-600 dark:text-zinc-400">
                         Already have an account?{" "}
-                        <a href="/auth/signin" className="text-secondary font-bold hover:underline">
+                        <a href="/auth/signin" className="text-secondary font-semibold">
                             Sign In
                         </a>
                     </p>
                 </div>
             </div>
+
+            {
+                showTerms && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                        <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl max-w-lg w-full shadow-xl">
+
+                            <h2 className="text-xl font-bold text-black dark:text-white mb-4">
+                                {modalContent === "terms" ? "Terms & Conditions" : "Privacy Policy"}
+                            </h2>
+
+                            <div className="text-sm text-gray-700 dark:text-zinc-300 space-y-2 max-h-[400px] overflow-y-auto">
+                                {modalContent === "terms" ? (
+                                    <p>
+                                        {terms}
+                                    </p>
+                                ) : (
+                                    <p>
+                                        {privacyNpolicy}
+                                    </p>
+                                )}
+                            </div>
+
+                            <button
+                                onClick={() => setShowTerms(false)}
+                                className="mt-5 w-full bg-secondary text-white py-2 rounded-lg"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                )
+            }
         </main>
     );
 }

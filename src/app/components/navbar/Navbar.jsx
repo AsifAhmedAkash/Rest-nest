@@ -164,19 +164,21 @@ export default function Navbar() {
                             )}
                         </div>
                     ) : (
-                        <>
-                            <Link
-                                href="/auth/signin"
-                                className="hidden md:block text-on-surface-variant hover:text-secondary text-sm font-semibold transition-colors"
-                            >
-                                Login
-                            </Link>
-                            <Link
-                                href="/auth/signup"
-                                className="bg-secondary text-on-secondary px-6 py-2.5 rounded-lg text-sm font-semibold shadow-sm hover:scale-[1.02] active:scale-95 transition-all"
-                            >
-                                Register
-                            </Link>
+                        < >
+                            <div className="flex items-center justify-center gap-4">
+                                <Link
+                                    href="/auth/signin"
+                                    className="hidden md:block text-on-surface-variant hover:text-secondary text-sm font-semibold transition-colors"
+                                >
+                                    Login
+                                </Link>
+                                <Link
+                                    href="/auth/signup"
+                                    className="bg-secondary text-on-secondary px-6 py-2.5 rounded-lg text-sm font-semibold shadow-sm hover:scale-[1.02] active:scale-95 transition-all"
+                                >
+                                    Register
+                                </Link>
+                            </div>
                         </>
                     )}
                 </div>
