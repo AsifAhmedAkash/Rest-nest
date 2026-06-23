@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { Bookmark, TriangleRight } from '@gravity-ui/icons';
+import { TriangleLeft } from '@gravity-ui/icons';
 
 const properties = [
     {
@@ -92,7 +94,8 @@ function PropertyCard({ property }) {
                     </span>
                 </div>
                 <button className="absolute top-4 right-4 w-10 h-10 bg-surface/50 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-secondary transition-colors">
-                    <span className="material-symbols-outlined">favorite</span>
+                    {/* <span className="material-symbols-outlined">favorite</span> */}
+                    <Bookmark className="w-6 h-6" />
                 </button>
             </div>
 
@@ -110,18 +113,16 @@ function PropertyCard({ property }) {
                     </span>
                 </div>
                 <div className="flex items-center gap-1 text-on-surface-variant text-sm mb-6">
-                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                        location_on
-                    </span>
+
                     {property.location}
                 </div>
-                <div className="flex items-center justify-between border-t border-outline-variant/30 pt-4">
+                <div className=" items-center justify-between border-t border-outline-variant/30 pt-4">
                     <div className="flex items-center gap-4 text-on-surface-variant">
                         {property.bed && (
                             <div className="flex items-center gap-1.5">
                                 <span
                                     className="material-symbols-outlined"
-                                    style={{ fontSize: 20 }}
+                                    style={{ fontSize: 12 }}
                                 >
                                     bed
                                 </span>
@@ -132,7 +133,7 @@ function PropertyCard({ property }) {
                             <div className="flex items-center gap-1.5">
                                 <span
                                     className="material-symbols-outlined"
-                                    style={{ fontSize: 20 }}
+                                    style={{ fontSize: 12 }}
                                 >
                                     bathtub
                                 </span>
@@ -143,7 +144,7 @@ function PropertyCard({ property }) {
                             <div className="flex items-center gap-1.5">
                                 <span
                                     className="material-symbols-outlined"
-                                    style={{ fontSize: 20 }}
+                                    style={{ fontSize: 12 }}
                                 >
                                     room_service
                                 </span>
@@ -156,9 +157,9 @@ function PropertyCard({ property }) {
                             <div className="flex items-center gap-1.5">
                                 <span
                                     className="material-symbols-outlined"
-                                    style={{ fontSize: 20 }}
+                                    style={{ fontSize: 12 }}
                                 >
-                                    square_foot
+                                    size
                                 </span>
                                 <span className="text-sm font-semibold">{property.sqft}</span>
                             </div>
@@ -180,9 +181,7 @@ function Pagination({ current, total, onChange }) {
                 onClick={() => onChange(Math.max(1, current - 1))}
                 className="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-container-high transition-colors"
             >
-                <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-                    chevron_left
-                </span>
+                <TriangleLeft></TriangleLeft>
             </button>
 
             {[1, 2, 3].map((page) => (
@@ -190,8 +189,8 @@ function Pagination({ current, total, onChange }) {
                     key={page}
                     onClick={() => onChange(page)}
                     className={`w-10 h-10 rounded-lg text-sm font-semibold transition-colors ${current === page
-                            ? "bg-secondary text-on-secondary"
-                            : "border border-outline-variant hover:bg-surface-container-high"
+                        ? "bg-secondary text-on-secondary"
+                        : "border border-outline-variant hover:bg-surface-container-high"
                         }`}
                 >
                     {page}
@@ -211,9 +210,7 @@ function Pagination({ current, total, onChange }) {
                 onClick={() => onChange(Math.min(total, current + 1))}
                 className="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-container-high transition-colors"
             >
-                <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-                    chevron_right
-                </span>
+                <TriangleRight></TriangleRight>
             </button>
         </div>
     );

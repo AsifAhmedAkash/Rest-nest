@@ -31,9 +31,7 @@ export default function HeroSection() {
                             Location
                         </label>
                         <div className="flex items-center gap-2 bg-surface-container-low px-4 py-3 rounded-xl border border-outline-variant">
-                            <span className="material-symbols-outlined text-outline text-xl">
-                                location_on
-                            </span>
+
                             <input
                                 type="text"
                                 placeholder="Where to?"
@@ -48,9 +46,7 @@ export default function HeroSection() {
                             Property Type
                         </label>
                         <div className="flex items-center gap-2 bg-surface-container-low px-4 py-3 rounded-xl border border-outline-variant">
-                            <span className="material-symbols-outlined text-outline text-xl">
-                                apartment
-                            </span>
+
                             <select className="bg-transparent border-none focus:ring-0 w-full text-base text-on-surface">
                                 <option>Any Type</option>
                                 <option>Apartment</option>
@@ -66,9 +62,7 @@ export default function HeroSection() {
                             Price Range
                         </label>
                         <div className="flex items-center gap-2 bg-surface-container-low px-4 py-3 rounded-xl border border-outline-variant">
-                            <span className="material-symbols-outlined text-outline text-xl">
-                                payments
-                            </span>
+
                             <input
                                 type="text"
                                 placeholder="Min - Max"

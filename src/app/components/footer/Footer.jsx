@@ -10,7 +10,7 @@ export default function Footer() {
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center ">
                         <span
-                            className="material-symbols-outlined text-secondary text-3xl"
+                            className=" text-secondary text-3xl"
                             style={{ fontVariationSettings: "'FILL' 1" }}
                         >
                             Rent
@@ -28,9 +28,7 @@ export default function Footer() {
                         <a href="#" className="hover:text-white transition-colors">
                             <span className="material-symbols-outlined">forum</span>
                         </a>
-                        <a href="#" className="hover:text-white transition-colors">
-                            <span className="material-symbols-outlined">alternate_email</span>
-                        </a>
+
                     </div>
                 </div>
 

@@ -39,12 +39,7 @@ export default function TopLocations() {
                         Find properties in the most desirable neighborhoods.
                     </p>
                 </div>
-                <button className="text-secondary text-sm font-semibold flex items-center gap-1 group">
-                    View all cities
-                    <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">
-                        arrow_forward
-                    </span>
-                </button>
+
             </div>
 
             {/* Location Grid */}

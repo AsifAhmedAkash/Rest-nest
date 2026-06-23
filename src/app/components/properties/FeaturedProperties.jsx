@@ -104,9 +104,7 @@ export default function FeaturedProperties() {
                                     </span>
                                 </div>
                                 {/* Favourite */}
-                                <button className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-on-surface-variant hover:text-red-500 transition-colors">
-                                    <span className="material-symbols-outlined">favorite</span>
-                                </button>
+
                             </div>
 
                             {/* Body */}
@@ -115,9 +113,7 @@ export default function FeaturedProperties() {
                                     {p.title}
                                 </h3>
                                 <div className="flex items-center gap-1 text-on-surface-variant text-sm mb-4">
-                                    <span className="material-symbols-outlined text-sm">
-                                        location_on
-                                    </span>
+
                                     {p.loc}
                                 </div>
                                 <div className="mt-auto pt-4 border-t border-outline-variant/30 flex justify-between items-center text-on-surface-variant">
@@ -135,9 +131,7 @@ export default function FeaturedProperties() {
                                             {p.bath}
                                         </span>
                                     </div>
-                                    <span className="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
-                                        arrow_forward
-                                    </span>
+
                                 </div>
                             </div>
                         </div>

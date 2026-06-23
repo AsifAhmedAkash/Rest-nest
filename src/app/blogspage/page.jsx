@@ -410,7 +410,7 @@ export default function BlogServicesPage() {
                                     </p>
                                     {subscribed ? (
                                         <div className="rounded-lg bg-secondary-container p-3 text-center text-sm font-medium text-on-secondary-container">
-                                            ✓ You're subscribed!
+                                            ✓ Youre subscribed!
                                         </div>
                                     ) : (
                                         <div className="flex gap-2">
@@ -491,7 +491,7 @@ export default function BlogServicesPage() {
                         Ready to Simplify Your Rental Journey?
                     </h2>
                     <p className="mb-8 text-lg opacity-75">
-                        Whether you're looking for your next home or managing a portfolio,
+                        Whether youre looking for your next home or managing a portfolio,
                         RentNest provides the tools you need to succeed.
                     </p>
                     <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">

@@ -19,9 +19,7 @@ export default function Sidebar() {
             <div className="flex flex-col gap-1">
                 <label className="text-sm font-semibold">Location</label>
                 <div className="relative">
-                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">
-                        location_on
-                    </span>
+
                     <input
                         type="text"
                         placeholder="City, Zip, or Neighborhood"
@@ -37,13 +35,11 @@ export default function Sidebar() {
                     <select className="w-full appearance-none pl-4 pr-10 py-3 rounded-lg border border-outline-variant bg-surface-bright focus:border-secondary outline-none cursor-pointer text-sm">
                         <option>All Types</option>
                         <option>Apartments</option>
-                        <option>Modern Houses</option>
-                        <option>Commercial Spaces</option>
-                        <option>Lofts &amp; Studios</option>
+                        <option>Houses</option>
+                        <option>Vila</option>
+
                     </select>
-                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">
-                        expand_more
-                    </span>
+
                 </div>
             </div>
 
@@ -57,8 +53,8 @@ export default function Sidebar() {
                     <label
                         key={option.value}
                         className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${sort === option.value
-                                ? "border-secondary"
-                                : "border-outline-variant hover:border-secondary"
+                            ? "border-secondary"
+                            : "border-outline-variant hover:border-secondary"
                             }`}
                     >
                         <input
@@ -76,7 +72,7 @@ export default function Sidebar() {
 
             {/* Apply Button */}
             <button className="mt-auto bg-primary-container text-on-primary-container px-4 py-4 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
-                <span className="material-symbols-outlined">filter_list</span>
+                {/* <span className="material-symbols-outlined">filter_list</span> */}
                 Apply All Filters
             </button>
         </aside>

@@ -48,9 +48,8 @@ export default function Navbar() {
     ];
 
     const dropdownLinks = [
-        { label: "My Profile", icon: "person", href: "/dashboard" },
-        { label: "My Listings", icon: "home", href: "/dashboard/owner-dashboard" },
-        { label: "Settings", icon: "settings", href: "/dashboard/settings" },
+        // { label: "My Profile", icon: "person", href: "/dashboard" },
+        { label: "My Listings", icon: "home", href: "/" },
     ];
 
     return (
@@ -61,12 +60,12 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center">
                 <span
-                    className="material-symbols-outlined text-secondary text-3xl"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
+                    className=" text-secondary text-3xl"
+
                 >
-                    home
+                    Rent
                 </span>
-                <span className="text-3xl font-bold text-on-surface">RentNest</span>
+                <span className="text-3xl font-bold text-on-surface">Nest</span>
             </Link>
 
             {/* Nav Links */}
@@ -117,9 +116,7 @@ export default function Navbar() {
                             <span className="hidden md:block text-sm font-semibold text-on-surface max-w-[120px] truncate">
                                 {user.name ?? user.email}
                             </span>
-                            <span className="material-symbols-outlined text-on-surface-variant text-base leading-none">
-                                {dropdownOpen ? "expand_less" : "expand_more"}
-                            </span>
+
                         </button>
 
                         {dropdownOpen && (
@@ -144,7 +141,7 @@ export default function Navbar() {
                                             <span className="material-symbols-outlined text-base">
                                                 {icon}
                                             </span>
-                                            {label}
+
                                         </Link>
                                     ))}
                                 </div>
@@ -157,7 +154,7 @@ export default function Navbar() {
                                         <span className="material-symbols-outlined text-base">
                                             logout
                                         </span>
-                                        Log out
+
                                     </button>
                                 </div>
                             </div>
