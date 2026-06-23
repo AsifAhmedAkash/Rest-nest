@@ -6,6 +6,7 @@ import { createProperty } from '@/lib/actions/property'
 import { toast } from '@heroui/react'
 // import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation'
+import { useSession } from '@/lib/auth-client'
 const amenityOptions = [
     'WiFi',
     'Parking',
@@ -22,7 +23,7 @@ const propertyTypes = [
 ]
 
 const AddProperty = () => {
-
+    const { data: session } = useSession();
     const router = useRouter();
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false)
@@ -75,7 +76,6 @@ const AddProperty = () => {
 
         status: 'Pending',
 
-        ownerInformation: '',
     })
 
     const handleChange = (e) => {
@@ -108,7 +108,10 @@ const AddProperty = () => {
         setLoading(true)
 
         try {
-            const res = await createProperty(formData)
+            const res = await createProperty({
+                ...formData,
+                ownerInformation: session?.user?.id, // ← inject here
+            });
 
             if (res.insertedId) {
                 toast.success('Property submitted successfully')
@@ -120,7 +123,9 @@ const AddProperty = () => {
         } catch (error) {
             console.error(error)
             toast.warning('Something went wrong')
-            setLoading(false)
+
+        } finally {
+            setLoading(false);
         }
     }
 
