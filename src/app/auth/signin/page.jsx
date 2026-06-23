@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
+import { Eye, EyeClosed } from "@gravity-ui/icons";
 
 export default function SignInPage() {
     const [email, setEmail] = useState("");
@@ -45,12 +46,8 @@ export default function SignInPage() {
                 </div>
                 <div className="relative z-10 p-16 flex flex-col justify-between h-full w-full">
                     <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center text-white">
-                            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
-                                nest_eco_leaf
-                            </span>
-                        </div>
-                        <span className="text-xl font-bold text-white tracking-tight">RentNest</span>
+
+                        <span className="text-xl font-bold text-white tracking-tight"> </span>
                     </div>
                     <div className="max-w-md">
                         <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
@@ -62,16 +59,8 @@ export default function SignInPage() {
                         </p>
                     </div>
                     <div className="flex gap-4">
-                        <div className="bg-white/80 backdrop-blur-md p-2 rounded-xl flex items-center gap-3 pr-4">
-                            <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary">
-                                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
-                                    verified
-                                </span>
-                            </div>
-                            <div>
-                                <p className="text-sm font-semibold text-on-surface">Trusted Platform</p>
-                                <p className="text-xs text-on-surface-variant">10k+ Verified Listings</p>
-                            </div>
+                        <div>
+
                         </div>
                     </div>
                 </div>
@@ -110,9 +99,9 @@ export default function SignInPage() {
                                 Email Address
                             </label>
                             <div className="relative">
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style={{ fontSize: 20 }}>
+                                {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style={{ fontSize: 20 }}>
                                     mail
-                                </span>
+                                </span> */}
                                 <input
                                     id="email"
                                     type="email"
@@ -136,9 +125,9 @@ export default function SignInPage() {
                                 </a>
                             </div>
                             <div className="relative">
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style={{ fontSize: 20 }}>
+                                {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style={{ fontSize: 20 }}>
                                     lock
-                                </span>
+                                </span> */}
                                 <input
                                     id="password"
                                     type={showPassword ? "text" : "password"}
@@ -153,9 +142,11 @@ export default function SignInPage() {
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface-variant"
                                 >
-                                    <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-                                        {showPassword ? "visibility_off" : "visibility"}
-                                    </span>
+                                    {showPassword ? (
+                                        <Eye width={20} height={20} />
+                                    ) : (
+                                        <EyeClosed width={20} height={20} />
+                                    )}
                                 </button>
                             </div>
                         </div>
@@ -191,7 +182,7 @@ export default function SignInPage() {
                             ) : (
                                 <>
                                     Sign In
-                                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span>
+                                    {/* <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span> */}
                                 </>
                             )}
                         </button>

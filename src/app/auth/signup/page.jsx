@@ -67,7 +67,7 @@ export default function SignUpPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
                 <div className="relative z-10 flex flex-col justify-between p-16 h-full w-full">
-                    <span className="text-xl font-bold text-white tracking-tight">RentNest</span>
+                    <span className="text-xl font-bold text-white tracking-tight"> </span>
                     <div className="max-w-md">
                         <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
                             Find the space where your life happens.
@@ -108,14 +108,14 @@ export default function SignUpPage() {
                                 I am a...
                             </label>
                             <div className="grid grid-cols-2 gap-3">
-                                {roles.map(({ value, label, icon, description }) => (
+                                {roles.map(({ value, label, description }) => (
                                     <button
                                         key={value}
                                         type="button"
                                         onClick={() => setRole(value)}
                                         className={`flex flex-col items-start gap-1.5 p-4 rounded-xl border-2 text-left transition-all duration-200 ${role === value
-                                                ? "border-secondary bg-secondary/5 shadow-sm"
-                                                : "border-outline-variant hover:border-secondary/40 hover:bg-surface-container/40"
+                                            ? "border-secondary bg-secondary/5 shadow-sm"
+                                            : "border-outline-variant hover:border-secondary/40 hover:bg-surface-container/40"
                                             }`}
                                     >
                                         <div className="flex items-center gap-2 w-full">
@@ -124,7 +124,7 @@ export default function SignUpPage() {
                                                     }`}
                                                 style={role === value ? { fontVariationSettings: "'FILL' 1" } : {}}
                                             >
-                                                {icon}
+
                                             </span>
                                             <span className={`text-sm font-bold ${role === value ? "text-secondary" : "text-on-surface"}`}>
                                                 {label}
@@ -151,7 +151,7 @@ export default function SignUpPage() {
                                 Full Name
                             </label>
                             <div className="relative">
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">person</span>
+                                {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">person</span> */}
                                 <input
                                     id="fullName"
                                     type="text"
@@ -170,7 +170,7 @@ export default function SignUpPage() {
                                 Email Address
                             </label>
                             <div className="relative">
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">mail</span>
+                                {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">mail</span> */}
                                 <input
                                     id="email"
                                     type="email"
@@ -190,7 +190,7 @@ export default function SignUpPage() {
                                     Password
                                 </label>
                                 <div className="relative">
-                                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">lock</span>
+                                    {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">lock</span> */}
                                     <input
                                         id="password"
                                         type="password"
@@ -207,7 +207,7 @@ export default function SignUpPage() {
                                     Confirm Password
                                 </label>
                                 <div className="relative">
-                                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">verified_user</span>
+                                    {/* <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">verified_user</span> */}
                                     <input
                                         id="confirmPassword"
                                         type="password"
@@ -216,13 +216,13 @@ export default function SignUpPage() {
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-base ${confirmPassword && password !== confirmPassword
-                                                ? "border-error"
-                                                : "border-outline-variant"
+                                            ? "border-error"
+                                            : "border-outline-variant"
                                             }`}
                                     />
                                 </div>
                                 {confirmPassword && password !== confirmPassword && (
-                                    <p className="text-xs text-error mt-1">Passwords don't match</p>
+                                    <p className="text-xs text-error mt-1">Passwords dont match</p>
                                 )}
                             </div>
                         </div>
