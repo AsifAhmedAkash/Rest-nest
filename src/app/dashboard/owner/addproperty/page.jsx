@@ -22,11 +22,30 @@ const propertyTypes = [
     'Office',
 ]
 
+const uploadToImgBB = async (file) => {
+    if (file.size > 2 * 1024 * 1024) {
+        toast.error('Image must be under 2MB');
+        return null;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, {
+        method: 'POST',
+        body: formData,
+    });
+
+    const data = await res.json();
+    return data.success ? data.data.url : null;
+};
+
 const AddProperty = () => {
     const { data: session } = useSession();
     const router = useRouter();
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false)
+    const [imageUploading, setImageUploading] = useState(false);
     const validateForm = () => {
         const newErrors = {}
 
@@ -358,26 +377,56 @@ const AddProperty = () => {
                     {/* Images */}
 
                     <div>
-
                         <label className="block text-sm font-semibold mb-1">
-                            Images
+                            Images <span className="text-zinc-400 font-normal">(max 2MB)</span>
                         </label>
 
-                        <input
-                            name="images"
-                            value={formData.images}
-                            onChange={handleChange}
-                            placeholder="https://..."
-                            type="text"
-                            aria-invalid={!!errors.images}
-                            className="w-full rounded-lg border px-3 py-2"
-                        />
-                        {errors.images && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {errors.images}
-                            </p>
-                        )}
+                        <div className="space-y-2">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={async (e) => {
+                                    const file = e.target.files?.[0];
+                                    if (!file) return;
 
+                                    setImageUploading(true);
+                                    const url = await uploadToImgBB(file);
+                                    if (url) {
+                                        setFormData(prev => ({ ...prev, images: url }));
+                                        toast.success('Image uploaded!');
+                                    } else {
+                                        toast.error('Upload failed');
+                                    }
+                                    setImageUploading(false);
+                                }}
+                                className="w-full rounded-lg border border-outline-variant dark:border-zinc-700 px-3 py-2 text-sm
+                       bg-white dark:bg-zinc-800 text-black dark:text-white
+                       file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0
+                       file:bg-secondary file:text-white file:text-sm file:font-semibold
+                       hover:file:opacity-90 cursor-pointer"
+                            />
+
+                            {imageUploading && (
+                                <p className="text-sm text-zinc-400">Uploading...</p>
+                            )}
+
+                            {formData.images && !imageUploading && (
+                                <div className="relative w-full h-40 rounded-lg overflow-hidden border border-outline-variant dark:border-zinc-700">
+                                    <img
+                                        src={formData.images}
+                                        alt="Preview"
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({ ...prev, images: '' }))}
+                                        className="absolute top-2 right-2 bg-black/50 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-black/70"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Extra Features */}
@@ -402,7 +451,7 @@ const AddProperty = () => {
 
 
                     <button
-                        disabled={loading}
+                        disabled={loading || imageUploading}
                         type="submit"
                         className="w-full bg-secondary text-white py-3 rounded-xl font-semibold disabled:opacity-50"
                     >

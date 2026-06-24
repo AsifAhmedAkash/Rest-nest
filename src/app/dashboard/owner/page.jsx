@@ -55,7 +55,7 @@ export default function OwnerDashboard() {
         );
 
     return (
-        <div className="bg-white min-h-screen">
+        <div className="bg-white dark:bg-zinc-800 min-h-screen">
 
 
 
