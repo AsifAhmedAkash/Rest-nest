@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
 import { Eye, EyeClosed } from "@gravity-ui/icons";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
     const [email, setEmail] = useState("");
@@ -12,6 +14,9 @@ export default function SignInPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get('redirect') || '/';
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -20,12 +25,14 @@ export default function SignInPage() {
             await signIn.email({
                 email,
                 password,
-                callbackURL: "/",
+
             });
         } catch (err) {
             setError("Invalid email or password. Please try again.");
         } finally {
+
             setLoading(false);
+            router.push(redirectTo)
         }
     };
 

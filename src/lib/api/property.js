@@ -11,6 +11,9 @@ export const getMyProperty = async (ownerId) => {
     return serverFetch(`/api/properties?ownerId=${ownerId}`);
 }
 
+export const getPropertyById = async (id) => {
+    return serverFetch(`/api/properties/${id}`);
+}
 
 export const getAllProperties = async (filters = {}) => {
     const params = new URLSearchParams();

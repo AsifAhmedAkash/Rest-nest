@@ -4,71 +4,73 @@
 import { useState, useEffect } from "react";
 import { Bookmark, TriangleRight, TriangleLeft } from '@gravity-ui/icons';
 import { getAllProperties } from "@/lib/api/property";
+import Link from "next/link";
 
 function PropertyCard({ property }) {
     return (
-        <div className="group bg-white dark:bg-zinc-800 rounded-xl overflow-hidden shadow-[0px_4px_12px_rgba(15,23,42,0.08)] hover:shadow-[0px_12px_32px_rgba(15,23,42,0.12)] dark:shadow-[0px_4px_12px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1">
-            <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                    src={property.images}
-                    alt={property.propertyTitle}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) => { e.target.src = 'https://placehold.co/400x300?text=No+Image' }}
-                />
-                <div className="absolute top-4 left-4">
-                    <span className={`backdrop-blur-md text-xs font-semibold px-3 py-1 rounded-full border ${property.status === 'Approved'
+        <Link href={`/allpoperties/${property._id}`} className="h-full">
+            <div className="group h-full flex flex-col bg-white dark:bg-zinc-800 rounded-xl overflow-hidden shadow-[0px_4px_12px_rgba(15,23,42,0.08)] hover:shadow-[0px_12px_32px_rgba(15,23,42,0.12)] dark:shadow-[0px_4px_12px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1">
+                <div className="relative aspect-[4/3] overflow-hidden flex-shrink-0">
+                    <img
+                        src={property.images}
+                        alt={property.propertyTitle}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => { e.target.src = 'https://placehold.co/400x300?text=No+Image' }}
+                    />
+                    <div className="absolute top-4 left-4">
+                        <span className={`backdrop-blur-md text-xs font-semibold px-3 py-1 rounded-full border ${property.status === 'Approved'
                             ? 'bg-emerald-500/20 text-white border-emerald-400/30'
                             : 'bg-yellow-500/20 text-white border-yellow-400/30'
-                        }`}>
-                        {property.status}
-                    </span>
-                </div>
-                <button className="absolute top-4 right-4 w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-emerald-500 transition-colors">
-                    <Bookmark className="w-5 h-5" />
-                </button>
-            </div>
-
-            <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                        {property.propertyTitle}
-                    </h3>
-                    <span className="text-xl font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap ml-2">
-                        ৳{Number(property.rent).toLocaleString()}
-                        <span className="text-sm font-normal text-zinc-500 dark:text-zinc-400">/{property.rentType === 'Monthly' ? 'mo' : property.rentType === 'Weekly' ? 'wk' : 'day'}</span>
-                    </span>
-                </div>
-                <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-6">{property.location}</p>
-                <div className="flex items-center justify-between border-t border-zinc-100 dark:border-zinc-700 pt-4">
-                    <div className="flex items-center gap-4 text-zinc-500 dark:text-zinc-400">
-                        {property.bedrooms && (
-                            <div className="flex items-center gap-1.5">
-                                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>bed</span>
-                                <span className="text-sm font-semibold">{property.bedrooms}</span>
-                            </div>
-                        )}
-                        {property.bathrooms && (
-                            <div className="flex items-center gap-1.5">
-                                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>bathtub</span>
-                                <span className="text-sm font-semibold">{property.bathrooms}</span>
-                            </div>
-                        )}
-                        {property.propertySize && (
-                            <div className="flex items-center gap-1.5">
-                                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>straighten</span>
-                                <span className="text-sm font-semibold">{property.propertySize} sqft</span>
-                            </div>
-                        )}
+                            }`}>
+                            {property.status}
+                        </span>
                     </div>
-                    <span className="bg-zinc-100 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 px-3 py-1 rounded text-xs font-medium">
-                        {property.propertyType}
-                    </span>
+                    <button className="absolute top-4 right-4 w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-emerald-500 transition-colors">
+                        <Bookmark className="w-5 h-5" />
+                    </button>
+                </div>
+
+                <div className="p-6 flex flex-col flex-1">
+                    <div className="flex justify-between items-start mb-2">
+                        <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
+                            {property.propertyTitle}
+                        </h3>
+                        <span className="text-xl font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap ml-2">
+                            ৳{Number(property.rent).toLocaleString()}
+                            <span className="text-sm font-normal text-zinc-500 dark:text-zinc-400">/{property.rentType === 'Monthly' ? 'mo' : property.rentType === 'Weekly' ? 'wk' : 'day'}</span>
+                        </span>
+                    </div>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-6 line-clamp-1">{property.location}</p>
+                    <div className="mt-auto  items-center justify-between border-t border-zinc-100 dark:border-zinc-700 pt-4">
+                        <div className="flex items-center gap-4 text-zinc-500 dark:text-zinc-400">
+                            {property.bedrooms && (
+                                <div className="flex items-center gap-1.5">
+                                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>bed</span>
+                                    <span className="text-sm font-semibold">{property.bedrooms}</span>
+                                </div>
+                            )}
+                            {property.bathrooms && (
+                                <div className="flex items-center gap-1.5">
+                                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>bath</span>
+                                    <span className="text-sm font-semibold">{property.bathrooms}</span>
+                                </div>
+                            )}
+                            {property.propertySize && (
+                                <div className="flex items-center gap-1.5">
+                                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>size</span>
+                                    <span className="text-sm font-semibold">{property.propertySize} sqft</span>
+                                </div>
+                            )}
+                        </div>
+                        <span className="bg-zinc-100 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 px-3 py-1 rounded text-xs font-medium">
+                            {property.propertyType}
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
-
 const ITEMS_PER_PAGE = 6;
 
 export default function PropertyGrid({ filters }) {
@@ -115,7 +117,7 @@ export default function PropertyGrid({ filters }) {
                     <p className="text-zinc-500 dark:text-zinc-400">No properties match your filters.</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch">
                     {paginated.map((p) => (
                         <PropertyCard key={p._id} property={p} />
                     ))}
@@ -136,8 +138,8 @@ export default function PropertyGrid({ filters }) {
                             key={i}
                             onClick={() => setCurrentPage(i + 1)}
                             className={`w-10 h-10 rounded-lg text-sm font-semibold transition-colors ${currentPage === i + 1
-                                    ? "bg-emerald-600 text-white"
-                                    : "border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                                ? "bg-emerald-600 text-white"
+                                : "border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                                 }`}
                         >
                             {i + 1}
