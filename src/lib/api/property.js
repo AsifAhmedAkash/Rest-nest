@@ -10,3 +10,12 @@ import { serverFetch } from "../core/server"
 export const getMyProperty = async (ownerId) => {
     return serverFetch(`/api/properties?ownerId=${ownerId}`);
 }
+
+
+export const getAllProperties = async (filters = {}) => {
+    const params = new URLSearchParams();
+    if (filters.location) params.append('location', filters.location);
+    if (filters.propertyType) params.append('propertyType', filters.propertyType);
+    if (filters.sort) params.append('sort', filters.sort);
+    return serverFetch(`/api/properties?${params.toString()}`);
+}
