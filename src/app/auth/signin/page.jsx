@@ -5,6 +5,7 @@ import { signIn } from "@/lib/auth-client";
 import { Eye, EyeClosed } from "@gravity-ui/icons";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignInPage() {
     const [email, setEmail] = useState("");
@@ -182,9 +183,9 @@ export default function SignInPage() {
 
                     <p className="mt-8 text-center text-sm text-on-surface-variant">
                         Dont have an account?{" "}
-                        <a href="/auth/signup" className="text-sm font-semibold text-secondary hover:underline ml-1">
+                        <Link href={`/auth/signup?redirect=${redirectTo}`} className="text-sm font-semibold text-secondary hover:underline ml-1">
                             Sign Up
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </section>

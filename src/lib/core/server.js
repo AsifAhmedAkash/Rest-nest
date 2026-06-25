@@ -1,4 +1,4 @@
-'use server'
+
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -15,6 +15,7 @@ export const serverMutation = async (path, data) => {
         },
         body: JSON.stringify(data),
     });
+
 
     return res.json();
 }

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { signUp } from "@/lib/auth-client";
 import { terms, privacyNpolicy } from "@/lib/legal/termsnpolicy";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function SignUpPage() {
     const router = useRouter();
@@ -17,6 +18,9 @@ export default function SignUpPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [role, setRole] = useState("tenant");
+    // const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get('redirect') || '/';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,7 +38,7 @@ export default function SignUpPage() {
                 email,
                 password,
                 role,
-                callbackURL: "/",
+                // callbackURL: "/",
             });
 
             if (error) {
@@ -51,6 +55,7 @@ export default function SignUpPage() {
             setError("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
+            router.push(redirectTo);
         }
     };
 
@@ -317,9 +322,9 @@ export default function SignUpPage() {
                     {/* SIGN IN */}
                     <p className="text-center mt-8 text-sm text-gray-600 dark:text-zinc-400">
                         Already have an account?{" "}
-                        <a href="/auth/signin" className="text-secondary font-semibold">
+                        <Link href={`/auth/signin?redirect=${redirectTo}`} className="text-secondary font-semibold">
                             Sign In
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>
