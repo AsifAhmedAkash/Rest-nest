@@ -28,7 +28,7 @@ const CATEGORY_COLORS = { "Market Trends": "success", "Tenant Advice": "primary"
 
 function ServiceCard({ service }) {
     return (
-        <Card className="group border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" isPressable>
+        <Card className="group border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" >
             <div className="p-6">
                 {service.tag && (
                     <Chip size="sm" className="mb-3 bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 font-semibold">{service.tag}</Chip>
@@ -148,7 +148,7 @@ export default function BlogServicesPage() {
 
                     {/* Featured Post + Newsletter */}
                     <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
-                        <Link href={`/blog/${FEATURED_POST.id}`} className="group lg:col-span-8">
+                        <Link href={`/blogspage/1`} className="group lg:col-span-8">
                             <Card className="h-full overflow-hidden border-0 shadow-md">
                                 <div className="p-0">
                                     <div className="relative h-80 lg:h-full min-h-[20rem]">
@@ -181,7 +181,7 @@ export default function BlogServicesPage() {
                                         <div className="rounded-lg bg-emerald-100 dark:bg-emerald-900 p-3 text-center text-sm font-medium text-emerald-700 dark:text-emerald-300">✓ Youre subscribed!</div>
                                     ) : (
                                         <div className="flex gap-2">
-                                            <Input type="email" placeholder="your@email.com" value={email} onValueChange={setEmail} size="sm" variant="bordered"
+                                            <Input type="email" placeholder="your@email.com" value={email} onChange={setEmail} size="sm" variant="bordered"
                                                 classNames={{ input: "text-sm dark:text-zinc-100", inputWrapper: "border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900" }} />
                                             <Button size="sm" className="shrink-0 bg-emerald-600 text-white font-semibold" onPress={handleSubscribe}>Join</Button>
                                         </div>

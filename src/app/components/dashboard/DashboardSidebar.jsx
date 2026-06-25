@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Heart, Person, Bars as Bars3Lines, House, Plus, Star } from "@gravity-ui/icons";
+import { BookOpen, Heart, Person, Bars as Bars3Lines, House, Plus, Star, CircleDollar } from "@gravity-ui/icons";
 import { Button } from "@heroui/react";
 import { useState } from "react";
 import Link from "next/link";
@@ -21,8 +21,10 @@ const ownerNavItems = [
 ];
 
 const adminNavItems = [
-    { icon: House, label: "All Properties", href: "/dashboard/admin" },
-    { icon: Person, label: "Users", href: "/dashboard/admin/users" },
+    { icon: Person, label: "All Users", href: "/dashboard/admin/allusers" },
+    { icon: House, label: "All Properties", href: "/dashboard/admin/allproperties" },
+    { icon: BookOpen, label: "All Bookings", href: "/dashboard/admin/allbookings" },
+    { icon: CircleDollar, label: "Transactions", href: "/dashboard/admin/transactions" },
 ];
 
 function NavLinks({ onClose }) {

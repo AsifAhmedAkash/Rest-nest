@@ -52,7 +52,8 @@ export default function Navbar() {
 
     const dashboardLinks = {
         tenant: '/dashboard/tenant',
-        owner: '/dashboard/owner'
+        owner: '/dashboard/owner',
+        admin: '/dashboard/admin'
     }
 
     if (user?.email) {

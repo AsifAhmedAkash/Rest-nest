@@ -156,7 +156,7 @@ export default function BlogDetailPage({ params }) {
                                     <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">About the Author</p>
                                     <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-100">{post.author.name}</h4>
                                     <p className="text-sm text-zinc-500 dark:text-zinc-400">{post.author.role}</p>
-                                    <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">Sarah has spent over a decade analysing residential property markets across the UK. She leads RentNest's research division and advises institutional landlords on portfolio strategy.</p>
+                                    <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">Sarah has spent over a decade analysing residential property markets across the UK. She leads RentNests research division and advises institutional landlords on portfolio strategy.</p>
                                 </div>
                             </div>
                         </Card>

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Bookmark, TriangleRight, TriangleLeft } from '@gravity-ui/icons';
 import { getAllProperties } from "@/lib/api/property";
 import Link from "next/link";
+import LikeButton from "./LikeButton";
 
 function PropertyCard({ property }) {
     return (
@@ -25,9 +26,10 @@ function PropertyCard({ property }) {
                             {property.status}
                         </span>
                     </div>
-                    <button className="absolute top-4 right-4 w-10 h-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-emerald-500 transition-colors">
-                        <Bookmark className="w-5 h-5" />
-                    </button>
+                    <div className="absolute top-4 right-4">
+                        <LikeButton property={property} />
+                    </div>
+
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">

@@ -12,7 +12,9 @@ export const getMyProperty = async (ownerId) => {
 }
 
 export const getPropertyById = async (id) => {
-    return serverFetch(`/api/properties/${id}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/properties/${id}`);
+    if (!res.ok) return null;
+    return res.json();
 }
 
 export const getAllProperties = async (filters = {}) => {
