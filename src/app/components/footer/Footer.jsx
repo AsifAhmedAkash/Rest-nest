@@ -1,6 +1,12 @@
 const quickLinks = ["About Us", "Terms of Service", "Privacy Policy", "Contact Support"];
 const propertyLinks = ["Urban Apartments", "Luxury Villas", "Modern Lofts", "Pet Friendly"];
+import { FaXTwitter } from "react-icons/fa6";
 
+import {
+    LogoFacebook,
+    LogoLinkedin,
+    // LogoTwitter as LogoX
+} from "@gravity-ui/icons";
 export default function Footer() {
     return (
         <footer className="bg-inverse-surface text-white w-full px-4 md:px-16 py-12">
@@ -79,6 +85,35 @@ export default function Footer() {
                         <button className="bg-secondary px-4 py-2 rounded-lg text-white hover:bg-secondary/90 transition-colors flex-shrink-0">
                             <span className="material-symbols-outlined">send</span>
                         </button>
+                    </div>
+                    <div className="flex gap-4 text-white/50">
+                        <a
+                            href="https://facebook.com/rentnest"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-white transition-colors"
+                        >
+                            <LogoFacebook width={18} height={18} />
+                        </a>
+
+                        <a
+                            href="https://linkedin.com/company/rentnest"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-white transition-colors"
+                        >
+                            <LogoLinkedin width={18} height={18} />
+                        </a>
+
+                        <a
+                            href="https://x.com/rentnest"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-white transition-colors"
+                        >
+                            {/* <LogoX width={18} height={18} /> */}
+                            <FaXTwitter size={18} />
+                        </a>
                     </div>
                 </div>
 

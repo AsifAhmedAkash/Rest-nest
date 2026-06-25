@@ -77,7 +77,7 @@ export default function FavouritesPage() {
                                             className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded-full transition-colors"
                                             title="Remove from favourites"
                                         >
-                                            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+                                            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>Remove favorite</span>
                                         </button>
                                     </div>
                                     <h3 className="text-xl font-bold text-black dark:text-white group-hover:text-secondary transition-colors mb-1">

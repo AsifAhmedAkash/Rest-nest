@@ -31,14 +31,14 @@ function ServiceCard({ service }) {
         <Card className="group border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" >
             <div className="p-6">
                 {service.tag && (
-                    <Chip size="sm" className="mb-3 bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 font-semibold">{service.tag}</Chip>
+                    <Chip size="sm" className="mb-3 bg-emerald-100  dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 font-semibold">{service.tag}</Chip>
                 )}
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900">
                     <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400" style={{ fontVariationSettings: "'FILL' 1" }}>{service.icon}</span>
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100">{service.title}</h3>
+                <h3 className="mb-2 text-lg font-semibold text-zinc-500 ">{service.title}</h3>
                 <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">{service.description}</p>
-                <div className="mt-5 flex items-center gap-1 text-sm font-semibold text-emerald-600 dark:text-emerald-400 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <div className="mt-5 flex items-center gap-1 text-sm font-semibold text-emerald-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     Learn more <span className="material-symbols-outlined text-base">arrow_right_alt</span>
                 </div>
             </div>
@@ -60,7 +60,7 @@ function ArticleCard({ article }) {
                             <span className="text-xs text-zinc-400">·</span>
                             <span className="text-xs text-zinc-500 dark:text-zinc-400">{article.readTime}</span>
                         </div>
-                        <h4 className="mb-2 text-base font-semibold leading-snug text-zinc-900 dark:text-zinc-100">{article.title}</h4>
+                        <h4 className="mb-2 text-base font-semibold leading-snug text-zinc-500">{article.title}</h4>
                         <p className="mb-4 line-clamp-2 text-sm text-zinc-500 dark:text-zinc-400">{article.excerpt}</p>
                         <div className="mt-auto flex items-center justify-between border-t border-zinc-100 dark:border-zinc-700 pt-3">
                             <span className="text-xs text-zinc-500 dark:text-zinc-400">{article.date}</span>
@@ -86,10 +86,10 @@ export default function BlogServicesPage() {
             `}</style>
 
             {/* Hero */}
-            <section className="relative overflow-hidden bg-zinc-50 dark:bg-zinc-950 py-20">
+            <section className="relative overflow-hidden bg-white dark:bg-zinc-950 py-20">
                 <div className="mx-auto max-w-7xl px-4 text-center md:px-16">
                     <Chip size="sm" className="mb-4 bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 font-semibold uppercase tracking-wider">RentNest Platform</Chip>
-                    <h1 className="mb-4 text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-6xl">
+                    <h1 className="mb-4 text-5xl font-bold tracking-tight text-zinc-900 dark:text-white md:text-6xl">
                         Elevate Your Living <span className="text-emerald-600 dark:text-emerald-400">Experience</span>
                     </h1>
                     <p className="mx-auto max-w-2xl text-lg text-zinc-500 dark:text-zinc-400">
@@ -175,7 +175,7 @@ export default function BlogServicesPage() {
                                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900">
                                         <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400" style={{ fontVariationSettings: "'FILL' 1" }}>mail</span>
                                     </div>
-                                    <h4 className="mb-1 text-lg font-semibold text-zinc-900 dark:text-zinc-100">Weekly Newsletter</h4>
+                                    <h4 className="mb-1 text-lg font-semibold text-zinc-500 ">Weekly Newsletter</h4>
                                     <p className="mb-5 text-sm text-zinc-500 dark:text-zinc-400">Get the latest rental tips and property news delivered straight to your inbox every week.</p>
                                     {subscribed ? (
                                         <div className="rounded-lg bg-emerald-100 dark:bg-emerald-900 p-3 text-center text-sm font-medium text-emerald-700 dark:text-emerald-300">✓ Youre subscribed!</div>

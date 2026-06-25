@@ -27,7 +27,7 @@ export default function Testimonials() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     {testimonials.map((t) => (
                         <div key={t.name} className="bg-white dark:bg-zinc-800 p-6 rounded-2xl shadow-sm border border-zinc-100 dark:border-zinc-700 flex flex-col">
-                            <StarRating rating={t.rating} />
+
                             <p className="text-zinc-500 dark:text-zinc-400 text-base mb-6 flex-1">{t.quote}</p>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-cover bg-center flex-shrink-0" style={{ backgroundImage: `url('${t.avatar}')` }} />
