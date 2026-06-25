@@ -1,94 +1,96 @@
-import Link from 'next/link';
-import React from 'react';
+'use client'
 
-const BookingPage = () => {
-    const bookings = [
-        { name: "Sarah Khan", email: "sarah.k@example.com", price: "$1,250", payment: "Paid", status: "Confirmed" },
-        { name: "James Hossain", email: "james.h@example.com", price: "$850", payment: "Pending", status: "In Review" },
-        { name: "Maria Chen", email: "maria.c@example.com", price: "$2,400", payment: "Paid", status: "Active" },
-    ];
-    const paymentStyle = {
-        Paid: "bg-secondary-container/40 text-on-secondary-container",
-        Pending: "bg-error-container/40 text-on-error-container",
-    };
+import { useEffect, useState } from 'react'
+import { useSession } from '@/lib/auth-client'
+import { getMyPayments } from '@/lib/api/payment'
+import Link from 'next/link'
 
-    const statusStyle = {
-        Confirmed: "bg-primary-fixed/60 text-on-primary-fixed",
-        "In Review": "bg-surface-container-high text-on-surface-variant",
-        Active: "bg-primary-fixed/60 text-on-primary-fixed",
-    };
+const paymentStyle = {
+    succeeded: "bg-secondary-container/40 text-on-secondary-container",
+    pending: "bg-error-container/40 text-on-error-container",
+}
 
-    const activities = [
-        { text: "Booked a 2-bedroom apartment in Dhaka", time: "2 hours ago", dot: "bg-secondary", ring: "ring-secondary-container/40" },
-        { text: "Added 'Skyline Villa' to Favourites", time: "Yesterday", dot: "bg-primary-fixed", ring: "ring-primary-fixed/40" },
-        { text: "Updated Profile Information", time: "3 days ago", dot: "bg-outline-variant", ring: "ring-outline-variant/40" },
-    ];
+const bookingStyle = {
+    Confirmed: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+    Pending: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+}
 
+export default function MyBookingsPage() {
+    const { data: session } = useSession()
+    const [bookings, setBookings] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (session?.user?.id) {
+            getMyPayments(session.user.id)
+                .then(data => setBookings(Array.isArray(data) ? data : []))
+                .finally(() => setLoading(false))
+        }
+    }, [session])
+
+    if (loading) return (
+        <div className="flex items-center justify-center py-20">
+            <p className="text-sm text-zinc-400">Loading bookings...</p>
+        </div>
+    )
 
     return (
-        <div>
-            {/* Bookings + Activity */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold text-on-surface dark:text-white">My Bookings</h3>
+            </div>
 
-                {/* Bookings table */}
-                <div className="lg:col-span-2 space-y-4">
-                    <div className="flex justify-between items-center">
-                        <h3 className="text-base font-semibold text-on-surface">Recent Bookings</h3>
-                        <Link href="/dashboard/tenant/mybookings" className="text-sm font-semibold text-secondary hover:underline">View All</Link>
-                    </div>
-                    <div className="bg-white rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left">
-                                <thead className="bg-surface-container-low border-b border-outline-variant/20">
-                                    <tr>
-                                        {["Name", "Email", "Price", "Payment", "Status"].map((col) => (
-                                            <th key={col} className="px-5 py-3.5 text-xs font-semibold text-on-surface-variant uppercase tracking-wide">{col}</th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-outline-variant/20">
-                                    {bookings.map((row, i) => (
-                                        <tr key={i} className="hover:bg-surface-container-low/50 transition-colors">
-                                            <td className="px-5 py-4 text-sm font-medium text-on-surface">{row.name}</td>
-                                            <td className="px-5 py-4 text-sm text-on-surface-variant">{row.email}</td>
-                                            <td className="px-5 py-4 text-sm font-bold text-on-surface">{row.price}</td>
-                                            <td className="px-5 py-4">
-                                                <span className={`${paymentStyle[row.payment]} px-2.5 py-1 rounded-full text-xs font-bold`}>{row.payment}</span>
-                                            </td>
-                                            <td className="px-5 py-4">
-                                                <span className={`${statusStyle[row.status]} px-2.5 py-1 rounded-full text-xs font-bold`}>{row.status}</span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+            <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-outline-variant/20 dark:border-zinc-700 overflow-hidden">
+                <div className="overflow-x-auto">
+                    {bookings.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-16 text-center">
+                            <span className="material-symbols-outlined text-5xl text-zinc-300 dark:text-zinc-600 mb-4">receipt_long</span>
+                            <p className="text-zinc-500 dark:text-zinc-400 text-sm">No bookings yet.</p>
+                            <Link href="/allpoperties" className="mt-4 text-sm font-semibold text-secondary hover:underline">
+                                Browse Properties
+                            </Link>
                         </div>
-                    </div>
-                </div>
-
-                {/* Activity */}
-                <div className="space-y-4">
-                    <h3 className="text-base font-semibold text-on-surface">Recent Activity</h3>
-                    <div className="bg-white p-5 rounded-xl shadow-sm border border-outline-variant/20 space-y-5">
-                        {activities.map((a, i) => (
-                            <div key={i} className="flex gap-3">
-                                <div className="relative flex-shrink-0 mt-1.5">
-                                    <div className={`w-2 h-2 rounded-full ${a.dot} ring-4 ${a.ring}`} />
-                                    {i < activities.length - 1 && (
-                                        <div className="absolute top-3.5 left-[3px] w-px h-10 bg-outline-variant/30" />
-                                    )}
-                                </div>
-                                <div>
-                                    <p className="text-sm text-on-surface">{a.text}</p>
-                                    <p className="text-xs text-on-surface-variant mt-0.5">{a.time}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    ) : (
+                        <table className="w-full text-left">
+                            <thead className="bg-surface-container-low dark:bg-zinc-800 border-b border-outline-variant/20 dark:border-zinc-700">
+                                <tr>
+                                    {["Property", "Move In", "Stay", "Amount", "Payment", "Status"].map((col) => (
+                                        <th key={col} className="px-5 py-3.5 text-xs font-semibold text-on-surface-variant dark:text-zinc-400 uppercase tracking-wide">{col}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-outline-variant/20 dark:divide-zinc-700">
+                                {bookings.map((b, i) => (
+                                    <tr key={i} className="hover:bg-surface-container-low/50 dark:hover:bg-zinc-800 transition-colors">
+                                        <td className="px-5 py-4">
+                                            <p className="text-sm font-semibold text-on-surface dark:text-white">{b.propertyTitle}</p>
+                                        </td>
+                                        <td className="px-5 py-4 text-sm text-on-surface-variant dark:text-zinc-400">
+                                            {b.moveInDate ?? '—'}
+                                        </td>
+                                        <td className="px-5 py-4 text-sm text-on-surface-variant dark:text-zinc-400">
+                                            {b.stayDuration ?? '—'}
+                                        </td>
+                                        <td className="px-5 py-4 text-sm font-bold text-on-surface dark:text-white">
+                                            ৳{Number(b.amount).toLocaleString()}
+                                        </td>
+                                        <td className="px-5 py-4">
+                                            <span className={`${paymentStyle[b.status] ?? paymentStyle.pending} px-2.5 py-1 rounded-full text-xs font-bold`}>
+                                                {b.status === 'succeeded' ? 'Paid' : 'Pending'}
+                                            </span>
+                                        </td>
+                                        <td className="px-5 py-4">
+                                            <span className={`${bookingStyle[b.bookingStatus] ?? bookingStyle.Pending} px-2.5 py-1 rounded-full text-xs font-bold`}>
+                                                {b.bookingStatus}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
         </div>
-    );
-};
-
-export default BookingPage;
+    )
+}

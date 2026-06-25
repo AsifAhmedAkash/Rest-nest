@@ -7,6 +7,11 @@ import { toast } from '@heroui/react'
 // import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { useSession } from '@/lib/auth-client'
+import { useSearchParams } from 'next/navigation'
+// import { getPropertyById, updateProperty } from '@/lib/actions/property'
+import { getPropertyById } from '@/lib/api/property'
+import { updateProperty } from '@/lib/actions/property'
+import { useEffect } from 'react'
 const amenityOptions = [
     'WiFi',
     'Parking',
@@ -24,7 +29,7 @@ const propertyTypes = [
 
 const uploadToImgBB = async (file) => {
     if (file.size > 2 * 1024 * 1024) {
-        toast.error('Image must be under 2MB');
+        toast.warning('Image must be under 2MB');
         return null;
     }
 
@@ -46,6 +51,12 @@ const AddProperty = () => {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false)
     const [imageUploading, setImageUploading] = useState(false);
+    const searchParams = useSearchParams()
+    const editId = searchParams.get('edit')
+    const isEditing = !!editId
+
+
+
     const validateForm = () => {
         const newErrors = {}
 
@@ -97,6 +108,30 @@ const AddProperty = () => {
 
     })
 
+    useEffect(() => {
+        if (editId) {
+            getPropertyById(editId).then(data => {
+                if (data?._id) {
+                    setFormData({
+                        propertyTitle: data.propertyTitle ?? '',
+                        description: data.description ?? '',
+                        location: data.location ?? '',
+                        propertyType: data.propertyType ?? 'Apartment',
+                        rent: data.rent ?? '',
+                        rentType: data.rentType ?? 'Monthly',
+                        bedrooms: data.bedrooms ?? '',
+                        bathrooms: data.bathrooms ?? '',
+                        propertySize: data.propertySize ?? '',
+                        amenities: data.amenities ?? [],
+                        images: data.images ?? '',
+                        extraFeatures: data.extraFeatures ?? '',
+                        status: data.status ?? 'Pending',
+                    })
+                }
+            })
+        }
+    }, [editId])
+
     const handleChange = (e) => {
         const { name, value } = e.target
 
@@ -117,34 +152,36 @@ const AddProperty = () => {
 
 
     const handleSubmit = async (e) => {
-
         e.preventDefault()
-
         if (!validateForm()) {
             toast.warning('Please fill all required fields')
             return
         }
         setLoading(true)
-
         try {
-            const res = await createProperty({
-                ...formData,
-                ownerInformation: session?.user?.id, // ← inject here
-            });
-
-            if (res.insertedId) {
-                toast.success('Property submitted successfully')
-
-                router.push('/dashboard/owner/myproperty')
+            if (isEditing) {
+                const res = await updateProperty(editId, formData)
+                if (res?.modifiedCount === 1) {
+                    toast.success('Property updated successfully')
+                    router.push('/dashboard/owner/myproperty')
+                } else {
+                    toast.danger('Failed to update')
+                }
+            } else {
+                const res = await createProperty({
+                    ...formData,
+                    ownerInformation: session?.user?.id,
+                })
+                if (res?.insertedId) {
+                    toast.success('Property submitted successfully')
+                    router.push('/dashboard/owner/myproperty')
+                }
             }
-            setLoading(false)
-
         } catch (error) {
             console.error(error)
             toast.warning('Something went wrong')
-
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
     }
 
@@ -395,7 +432,7 @@ const AddProperty = () => {
                                         setFormData(prev => ({ ...prev, images: url }));
                                         toast.success('Image uploaded!');
                                     } else {
-                                        toast.error('Upload failed');
+                                        toast.danger('Upload failed');
                                     }
                                     setImageUploading(false);
                                 }}
@@ -455,7 +492,7 @@ const AddProperty = () => {
                         type="submit"
                         className="w-full bg-secondary text-white py-3 rounded-xl font-semibold disabled:opacity-50"
                     >
-                        {loading ? 'Submitting...' : 'Submit Property'}
+                        {loading ? 'Save...' : 'Save Property'}
                     </button>
 
                 </form>

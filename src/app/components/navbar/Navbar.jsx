@@ -48,6 +48,18 @@ export default function Navbar() {
 
     ];
 
+    const dashboardLinks = {
+        tenant: '/dashboard/tenant',
+        owner: '/dashboard/owner'
+    }
+
+    if (user?.email) {
+        navLinks.push({
+            label: 'Dashboard',
+            href: dashboardLinks[user?.role || 'tenant']
+        })
+    }
+
     const dropdownLinks = [
         // { label: "My Profile", icon: "person", href: "/dashboard" },
         { label: "My Listings", icon: "home", href: "/" },

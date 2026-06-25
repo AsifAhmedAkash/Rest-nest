@@ -26,8 +26,8 @@ const BookPropertyPage = async ({ params }) => {
     console.log("property ", property);
 
     return (
-        <div>
-            <h2>Apply prperty</h2>
+        <div className='p-4'>
+            {/* <h2>Apply prperty</h2> */}
             <BookThisProperty tenant={user} property={property}></BookThisProperty>
         </div>
     );

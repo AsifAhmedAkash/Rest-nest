@@ -1,51 +1,35 @@
 
 'use client'
 import { getMyProperty } from '@/lib/api/property';
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 import { useSession } from "@/lib/auth-client";
-
-const properties = [
-    {
-        title: "Skyline Penthouse",
-        location: "Sonadanga R/A, Khulna",
-        price: "৳45,000",
-        rentType: "Monthly",
-        type: "Apartment",
-        status: "Approved",
-        statusStyle: "bg-secondary-container/30 text-on-secondary-container",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBAPM_1ORDcnBM-zXSJ7GHkoghIqg6kz97LVULoSx0OmzPK_lf2XGRYiyCUP3debt3354vBQ6EwRlFdHw_HSaN0m3SjCcuSWbjPW5qc4cjNVcVNL5cAeIFSRbKBnVv8V8evutqRbY_ifofdD5w9rtwhjCBZ8WAirjOlQTOcw7Z6P-UNAT0jhfhIRVTMhMSTzIGQz2c1dJfwIZz-fROv0iCsBT6WOUFUTBDEL_b08T0QSYIDMnqOxF--lWi8p9ILb4W0aS9IltgKSY_P",
-    },
-    {
-        title: "Green Valley Villa",
-        location: "Khalishpur, Khulna",
-        price: "৳120,000",
-        rentType: "Monthly",
-        type: "Villa",
-        status: "Pending",
-        statusStyle: "bg-tertiary-fixed text-on-tertiary-container",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBfPo4wVeLjtWJfnsiCjxZIM5j2Xrys5nAIxJ4Q4FyuJLdO7jWJQkR_uuR4WJIGnA0ZX6-fXUye04ykQ7X1C3aSPJIvt67KFEZj7aDHp1ZfStuenZVhiRb7PFwZjp_QyxkZmz_fX9liQ3KP_iVbXidkNqN-FQbj5ZXfvOFWr3yzM5w1BaQeR4YG1p5t7bJo7r-dE2oQhd0lDPIG97DByXNhdlvD1izLRq-ASTuJcrJW-MOhdIcYZZAvzW4MH9pmofI1q5F28_yRKFeO",
-    },
-    {
-        title: "Royal Studio Space",
-        location: "Mujgunni R/A, Khulna",
-        price: "৳32,000",
-        rentType: "Monthly",
-        type: "Commercial",
-        status: "Approved",
-        statusStyle: "bg-secondary-container/30 text-on-secondary-container",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCYPfPXxdNbcCOumOaK_CkLc0NVejrstBd0kmQQQqVCwcnBDk0i-llKa8VtmRhLzOGITwY1-M5Gr4nASdUOmn4ouW1lUbgnof-KwRBiTLCVE3PFQmI3GZoQ3Cze3xFN4f-kbeo-7UVcBvl6KtxY4gDfdhDX4Kh5wBHyoULhQdx2im_IeCTBgjGkkTGQkD-QXsFnEp3U3S-yLoGgtfD91P4l1lLtoqDbStdPWca8ulc2-lYP83ZCoJFgOTC2X4zWMoJ-yeo2029DdWoW",
-    },
-];
+import { useRouter } from 'next/navigation'
+// import { deleteProperty } from '@/lib/api/property'
+import { deleteProperty } from '@/lib/actions/property';
+import { toast } from '@heroui/react'
+import React, { useState, useEffect } from 'react'
 
 const MyPropertyPage = () => {
     const { data: session } = useSession();
     const [properties, setProperties] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
         if (session?.user?.id) {
             getMyProperty(session.user.id).then(data => setProperties(data));
         }
     }, [session]);
+
+    const handleDelete = async (id) => {
+        if (!confirm('Are you sure you want to delete this property?')) return;
+        const res = await deleteProperty(id);
+        if (res?.deletedCount === 1) {
+            toast.success('Property deleted');
+            setProperties(prev => prev.filter(p => p._id !== id));
+        } else {
+            toast.error('Failed to delete');
+        }
+    }
 
     return (
         <div>
@@ -112,10 +96,16 @@ const MyPropertyPage = () => {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                                                    <button className="p-1 hover:text-secondary transition-colors">
+                                                    <button
+                                                        onClick={() => router.push(`/dashboard/owner/addproperty?edit=${p._id}`)}
+                                                        className="p-1 hover:text-secondary transition-colors"
+                                                    >
                                                         <span className="material-symbols-outlined">edit</span>
                                                     </button>
-                                                    <button className="p-1 hover:text-red-500 transition-colors">
+                                                    <button
+                                                        onClick={() => handleDelete(p._id)}
+                                                        className="p-1 hover:text-red-500 transition-colors"
+                                                    >
                                                         <span className="material-symbols-outlined">delete</span>
                                                     </button>
                                                 </div>

@@ -14,6 +14,7 @@ const BookThisProperty = ({ tenant, property }) => {
         socialLink: '',
         stayDuration: '',
         stayUnit: 'months',
+        moveInDate: '',
         questions: '',
         agreed: false,
     })
@@ -36,31 +37,26 @@ const BookThisProperty = ({ tenant, property }) => {
 
         setLoading(true)
         try {
-            const payload = {
+            // store form data temporarily in sessionStorage
+            sessionStorage.setItem('pendingBooking', JSON.stringify({
                 propertyId: property._id,
                 propertyTitle: property.propertyTitle,
                 ownerId: property.ownerInformation,
-
                 tenantUserId: tenant.id,
-                // tenantName: tenant.name,
+                tenantName: tenant.name,
                 tenantEmail: tenant.email,
-
                 fullName: formData.fullName,
                 mobileNumber: formData.mobileNumber,
                 socialLink: formData.socialLink,
                 stayDuration: `${formData.stayDuration} ${formData.stayUnit}`,
+                moveInDate: formData.moveInDate,
                 questions: formData.questions,
-
                 bookingStatus: 'Pending',
-            }
-            const res = await createNewBooking(payload)
+            }))
 
-            if (res?.insertedId) {
-                toast.success('Booking request sent!')
-                router.push('/')
-            } else {
-                toast.error('Failed to submit. Please try again.')
-            }
+            // redirect to payment page with property id
+            router.push(`/payment/${property._id}`)
+
         } catch (err) {
             console.error(err)
             toast.error('Something went wrong')
@@ -128,6 +124,22 @@ const BookThisProperty = ({ tenant, property }) => {
                         />
                     </div>
 
+                    <div className="space-y-1">
+                        <label className="text-sm font-semibold text-black dark:text-white flex items-center gap-2">
+                            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>calendar_today</span>
+                            Move In Date
+                        </label>
+                        <input
+                            name="moveInDate"
+                            value={formData.moveInDate}
+                            onChange={handleChange}
+                            required
+                            type="date"
+                            min={new Date().toISOString().split('T')[0]}
+                            className="w-full h-12 px-4 rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-black dark:text-white focus:border-secondary focus:ring-1 focus:ring-secondary/20 outline-none transition-all"
+                        />
+                    </div>
+
                     {/* Stay Duration */}
                     <div className="space-y-1">
                         <label className="text-sm font-semibold text-black dark:text-white flex items-center gap-2">
@@ -179,7 +191,7 @@ const BookThisProperty = ({ tenant, property }) => {
                     <div className="space-y-1">
                         <label className="text-sm font-semibold text-black dark:text-white flex items-center gap-2">
                             <span className="material-symbols-outlined" style={{ fontSize: 18 }}>chat_bubble</span>
-                            Any Questions? <span className="text-zinc-400 font-normal">(optional)</span>
+                            Additional Info <span className="text-zinc-400 font-normal">(optional)</span>
                         </label>
                         <textarea
                             name="questions"
@@ -202,7 +214,7 @@ const BookThisProperty = ({ tenant, property }) => {
                             className="mt-1 w-5 h-5 text-secondary border-gray-300 rounded"
                         />
                         <label htmlFor="agreed" className="text-sm text-zinc-600 dark:text-zinc-400 cursor-pointer">
-                            Ive read all the info and I understand the terms
+                            Ive read all the description and I understand the terms
                         </label>
                     </div>
 
