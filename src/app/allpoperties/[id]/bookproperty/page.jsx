@@ -14,13 +14,19 @@ const BookPropertyPage = async ({ params }) => {
     }
 
     // console.log('user info', user);
-    if (user.role != 'tenant') {
+    if (user.role !== 'tenant') {
         return (
-            <div>
-                Only job seeker can apply....!!!
+            <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-zinc-800">
+                <div className="p-6 rounded-xl border border-red-200 bg-red-50 shadow-md flex items-center gap-3">
+                    <span className="material-symbols-outlined text-red-500">error</span>
+                    <p className="text-red-700 font-semibold">
+                        Only tenants can book this property.
+                    </p>
+                </div>
             </div>
-        )
+        );
     }
+
 
     const property = await getPropertyById(id);
     console.log("property ", property);

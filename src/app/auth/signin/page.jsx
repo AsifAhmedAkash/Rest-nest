@@ -23,17 +23,21 @@ export default function SignInPage() {
         setLoading(true);
         setError("");
         try {
-            await signIn.email({
+            const { data, error } = await signIn.email({
                 email,
                 password,
-
             });
+
+            if (error) {
+                setError("Invalid email or password. Please try again.");
+                return;
+            }
+
+            router.push(redirectTo); // ← only on success
         } catch (err) {
             setError("Invalid email or password. Please try again.");
         } finally {
-
-            setLoading(false);
-            router.push(redirectTo)
+            setLoading(false); // ← only this here
         }
     };
 

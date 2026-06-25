@@ -38,7 +38,6 @@ export default function SignUpPage() {
                 email,
                 password,
                 role,
-                // callbackURL: "/",
             });
 
             if (error) {
@@ -47,15 +46,14 @@ export default function SignUpPage() {
                 } else {
                     setError(error.message ?? "Signup failed. Please try again.");
                 }
-                return; // ← stop here, don't redirect
+                return;
             }
 
-            router.push("/");
+            router.push(redirectTo); // ← only on success
         } catch (err) {
             setError("Something went wrong. Please try again.");
         } finally {
-            setLoading(false);
-            router.push(redirectTo);
+            setLoading(false); // ← only loading reset here
         }
     };
 

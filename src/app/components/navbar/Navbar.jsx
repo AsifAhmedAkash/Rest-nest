@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -12,7 +13,7 @@ export default function Navbar() {
     const { data: session, isPending } = useSession();
     const dropdownRef = useRef(null);
     const pathname = usePathname();
-
+    const router = useRouter()
     const user = session?.user;
 
     useEffect(() => {
@@ -34,6 +35,7 @@ export default function Navbar() {
     const handleLogout = async () => {
         await signOut();
         setDropdownOpen(false);
+        router.push('/auth/signin');
     };
 
     const getInitials = (name) => {

@@ -32,3 +32,5 @@ export const serverDelete = async (path) => {
     if (!res.ok) return null;
     return res.json();
 }
+
+//60-2
